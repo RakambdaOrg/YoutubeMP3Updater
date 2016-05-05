@@ -17,7 +17,8 @@ public class Main
 {
 	public static void main(String[] args) throws IOException, ParseException, ClassNotFoundException, InterruptedException
 	{
-		ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
+		//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
+		ArrayList<URL> videos = JSONIDS.parse(FileUtils.askFile());
 		Configuration config = new Configuration(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\YoutubeMP3Updater\\config.db"), false);
 		for(URL url : videos)
 		{

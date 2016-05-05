@@ -91,7 +91,7 @@ public class VideoWorker
 			{
 				e1.printStackTrace();
 			}
-			Log.warning("Video is probably being converted, please retry later (" + videoID + ")", e);
+			Log.warning("Video is probably being converted, please retry later (" + videoID + ")", null);
 		}
 		return false;
 	}
