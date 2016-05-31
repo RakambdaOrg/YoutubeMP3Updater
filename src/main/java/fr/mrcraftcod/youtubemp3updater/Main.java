@@ -1,8 +1,9 @@
 package fr.mrcraftcod.youtubemp3updater;
 
+import fr.mrcraftcod.utils.FileUtils;
 import fr.mrcraftcod.youtubemp3updater.objects.VideoWorker;
-import fr.mrcraftcod.youtubemp3updater.utils.ChromeBookmarks;
 import fr.mrcraftcod.youtubemp3updater.utils.Configuration;
+import fr.mrcraftcod.youtubemp3updater.utils.JSONIDS;
 import org.json.simple.parser.ParseException;
 import java.io.File;
 import java.io.IOException;
