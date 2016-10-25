@@ -20,7 +20,7 @@ public class Main
 	{
 		//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
 		ArrayList<URL> videos = JSONIDS.parse(FileUtils.askFile());
-		Configuration config = new Configuration(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\YoutubeMP3Updater\\config.db"), false);
+		Configuration config = new Configuration(new File(new File(FileUtils.getAppDataFolder(), "YoutubeMP3Updater"), "config.db"), false);
 		for(URL url : videos)
 		{
 			String videoID = null;
