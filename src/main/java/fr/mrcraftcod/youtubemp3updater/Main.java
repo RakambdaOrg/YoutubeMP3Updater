@@ -18,14 +18,32 @@ public class Main
 {
 	public static void main(String[] args) throws IOException, ParseException, ClassNotFoundException, InterruptedException
 	{
-		//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
-		ArrayList<URL> videos = JSONIDS.parse(FileUtils.askFile());
 		Configuration config = new Configuration(new File(new File(FileUtils.getAppDataFolder(), "YoutubeMP3Updater"), "config.db"), false);
-		for(URL url : videos)
+		if(args.length == 0)
 		{
-			String videoID = null;
-			if((videoID = getVideoID(url)) != null && !config.isVideoDone(videoID))
-				new VideoWorker(config, videoID).onDone();
+			//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
+			ArrayList<URL> videos = JSONIDS.parse(FileUtils.askFile());
+			for(URL url : videos)
+			{
+				String videoID;
+				if((videoID = getVideoID(url)) != null && !config.isVideoDone(videoID))
+					new VideoWorker(config, videoID).onDone();
+			}
+		}
+		else
+		{
+			switch(args[0])
+			{
+				case "-r":
+					for(int i = 1; i < args.length; i++)
+					{
+						System.out.println("Removing video " + args[i]);
+						config.removeVideo(args[i]);
+					}
+					break;
+				default:
+					System.out.println("Wrong arguments");
+			}
 		}
 		config.close();
 		System.exit(0);
@@ -36,12 +54,12 @@ public class Main
 		if(!url.getHost().equals("www.youtube.com"))
 			return null;
 		Map<String, String> parameters = splitQuery(url);
-		return parameters.containsKey("v") ? parameters.get("v") : null;
+		return parameters.getOrDefault("v", null);
 	}
 
 	private static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException
 	{
-		Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+		Map<String, String> query_pairs = new LinkedHashMap<>();
 		String query = url.getQuery();
 		String[] pairs = query.split("&");
 		for (String pair : pairs)
