@@ -21,14 +21,7 @@ public class Main
 		Configuration config = new Configuration(new File(new File(FileUtils.getAppDataFolder(), "YoutubeMP3Updater"), "config.db"), false);
 		if(args.length == 0)
 		{
-			//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
-			ArrayList<URL> videos = JSONIDS.parse(FileUtils.askFile());
-			for(URL url : videos)
-			{
-				String videoID;
-				if((videoID = getVideoID(url)) != null && !config.isVideoDone(videoID))
-					new VideoWorker(config, videoID).onDone();
-			}
+			processFile(FileUtils.askFile(), config);
 		}
 		else
 		{
@@ -42,13 +35,28 @@ public class Main
 					}
 					break;
 				default:
-					System.out.println("Wrong arguments");
+					if(new File(args[0]).exists())
+						processFile(new File(args[0]), config);
+					else
+						System.out.println("Wrong arguments");
 			}
 		}
 		config.close();
 		System.exit(0);
 	}
-
+	
+	private static void processFile(File file, Configuration config) throws IOException
+	{
+		//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
+		ArrayList<URL> videos = JSONIDS.parse(file);
+		for(URL url : videos)
+		{
+			String videoID;
+			if((videoID = getVideoID(url)) != null && !config.isVideoDone(videoID))
+				new VideoWorker(config, videoID).onDone();
+		}
+	}
+	
 	private static String getVideoID(URL url) throws UnsupportedEncodingException
 	{
 		if(!url.getHost().equals("www.youtube.com"))
