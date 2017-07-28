@@ -1,6 +1,6 @@
 package fr.mrcraftcod.youtubemp3updater;
 
-import fr.mrcraftcod.utils.FileUtils;
+import fr.mrcraftcod.utils.javafx.JFXUtils;
 import fr.mrcraftcod.youtubemp3updater.objects.VideoWorker;
 import fr.mrcraftcod.youtubemp3updater.utils.Configuration;
 import fr.mrcraftcod.youtubemp3updater.utils.JSONIDS;
@@ -19,11 +19,11 @@ public class Main
 	public static void main(String[] args) throws IOException, ParseException, ClassNotFoundException, InterruptedException
 	{
 		//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
-		ArrayList<URL> videos = JSONIDS.parse(FileUtils.askFile());
+		ArrayList<URL> videos = JSONIDS.parse(JFXUtils.askFile().get());
 		Configuration config = new Configuration(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\YoutubeMP3Updater\\config.db"), false);
 		for(URL url : videos)
 		{
-			String videoID = null;
+			String videoID;
 			if((videoID = getVideoID(url)) != null && !config.isVideoDone(videoID))
 				new VideoWorker(config, videoID).onDone();
 		}
