@@ -1,6 +1,6 @@
 package fr.mrcraftcod.youtubemp3updater;
 
-import fr.mrcraftcod.utils.javafx.JFXUtils;
+import fr.mrcraftcod.utils.FileUtils;
 import fr.mrcraftcod.youtubemp3updater.objects.VideoWorker;
 import fr.mrcraftcod.youtubemp3updater.utils.Configuration;
 import fr.mrcraftcod.youtubemp3updater.utils.JSONIDS;
@@ -18,30 +18,56 @@ public class Main
 {
 	public static void main(String[] args) throws IOException, ParseException, ClassNotFoundException, InterruptedException
 	{
+		Configuration config = new Configuration(new File(new File(FileUtils.getAppDataFolder(), "YoutubeMP3Updater"), "config.db"), false);
+		if(args.length == 0)
+		{
+			processFile(FileUtils.askFile(), config);
+		}
+		else
+		{
+			switch(args[0])
+			{
+				case "-r":
+					for(int i = 1; i < args.length; i++)
+					{
+						System.out.println("Removing video " + args[i]);
+						config.removeVideo(args[i]);
+					}
+					break;
+				default:
+					if(new File(args[0]).exists())
+						processFile(new File(args[0]), config);
+					else
+						System.out.println("Wrong arguments");
+			}
+		}
+		config.close();
+		System.exit(0);
+	}
+	
+	private static void processFile(File file, Configuration config) throws IOException
+	{
 		//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
-		ArrayList<URL> videos = JSONIDS.parse(JFXUtils.askFile().get());
-		Configuration config = new Configuration(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\YoutubeMP3Updater\\config.db"), false);
+		ArrayList<URL> videos = JSONIDS.parse(file);
 		for(URL url : videos)
 		{
 			String videoID;
 			if((videoID = getVideoID(url)) != null && !config.isVideoDone(videoID))
 				new VideoWorker(config, videoID).onDone();
 		}
-		config.close();
-		System.exit(0);
 	}
-
+	
 	private static String getVideoID(URL url) throws UnsupportedEncodingException
 	{
 		if(!url.getHost().equals("www.youtube.com"))
 			return null;
 		Map<String, String> parameters = splitQuery(url);
-		return parameters.containsKey("v") ? parameters.get("v") : null;
+		return parameters.getOrDefault("v", null);
 	}
 
 	private static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException
 	{
-		Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+		Map<String, String> query_pairs = new LinkedHashMap<>();
 		String query = url.getQuery();
 		String[] pairs = query.split("&");
 		for (String pair : pairs)

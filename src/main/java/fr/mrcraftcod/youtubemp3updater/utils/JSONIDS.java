@@ -10,9 +10,11 @@ public class JSONIDS
 {
 	public static ArrayList<URL> parse(File file) throws IOException
 	{
+		if(file == null || !file.exists())
+			return new ArrayList<>();
 		ArrayList<URL> urls = new ArrayList<>();
 		StringBuilder stringBuilder = new StringBuilder();
-		Files.readAllLines(Paths.get(file.toURI())).stream().forEach(stringBuilder::append);
+		Files.readAllLines(Paths.get(file.toURI())).forEach(stringBuilder::append);
 		for(String id : stringBuilder.toString().replace("\"", "").replace(" ", "").replace("[", "").replace("]", "").split(","))
 			urls.add(new URL("https://www.youtube.com/watch?v=" + id));
 		return urls;

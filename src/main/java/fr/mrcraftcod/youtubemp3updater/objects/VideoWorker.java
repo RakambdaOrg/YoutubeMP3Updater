@@ -11,10 +11,12 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import static fr.mrcraftcod.utils.FileUtils.getDesktopFolder;
 import static fr.mrcraftcod.utils.FileUtils.sanitizeFileName;
 
 public class VideoWorker
 {
+	private final static File downloadFolder = new File(getDesktopFolder(), "YTMP3");
 	private final String videoID;
 	private final Configuration config;
 
@@ -45,7 +47,7 @@ public class VideoWorker
 			if(json.has("link"))
 			{
 				int byteSize = 1024;
-				File file = new File("D:\\Documents\\MP3", sanitizeFileName(json.getString("title").replaceAll("\"", "'")) + ".mp3");
+				File file = new File(downloadFolder, sanitizeFileName(json.getString("title").replaceAll("\"", "'")) + ".mp3");
 				Log.info("Downloading video " + file.getAbsolutePath() + " " + videoID);
 				if(!file.getParentFile().exists())
 					file.getParentFile().mkdirs();

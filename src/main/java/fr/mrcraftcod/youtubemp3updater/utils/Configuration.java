@@ -39,4 +39,10 @@ public class Configuration extends SQLiteManager
 		watchedIDS.add(videoID);
 		this.sendUpdateRequest("INSERT INTO " + TABLE_DB_FILE + " VALUES(\"" + videoID + "\");");
 	}
+
+	public void removeVideo(String videoID)
+	{
+		if(watchedIDS.remove(videoID))
+			this.sendUpdateRequest("DELETE FROM " + TABLE_DB_FILE + " WHERE " + KEY_LABEL + "= \"" + videoID + "\";");
+	}
 }
