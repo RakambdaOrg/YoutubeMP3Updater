@@ -1,12 +1,13 @@
 package fr.mrcraftcod.youtubemp3updater;
 
-import fr.mrcraftcod.utils.FileUtils;
-import fr.mrcraftcod.youtubemp3updater.objects.VideoWorker;
+import fr.mrcraftcod.utils.base.FileUtils;
+import fr.mrcraftcod.youtubemp3updater.objects.FileDownloadWorker;
 import fr.mrcraftcod.youtubemp3updater.utils.Configuration;
 import fr.mrcraftcod.youtubemp3updater.utils.JSONIDS;
 import org.json.simple.parser.ParseException;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -49,12 +50,17 @@ public class Main
 	{
 		//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
 		ArrayList<URL> videos = JSONIDS.parse(file);
+		File filee = new File(FileUtils.getDesktopFolder("YTTMP3"), "downloads.sh");
+		FileUtils.createDirectories(filee);
+		PrintWriter pw = new PrintWriter(filee);
+		pw.println("#!/bin/sh");
 		for(URL url : videos)
 		{
 			String videoID;
 			if((videoID = getVideoID(url)) != null && !config.isVideoDone(videoID))
-				new VideoWorker(config, videoID).onDone();
+				new FileDownloadWorker(config, pw, videoID).onDone();
 		}
+		pw.close();
 	}
 	
 	private static String getVideoID(URL url) throws UnsupportedEncodingException
