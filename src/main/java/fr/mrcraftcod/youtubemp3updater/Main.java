@@ -4,7 +4,6 @@ import fr.mrcraftcod.utils.base.FileUtils;
 import fr.mrcraftcod.youtubemp3updater.objects.FileDownloadWorker;
 import fr.mrcraftcod.youtubemp3updater.utils.Configuration;
 import fr.mrcraftcod.youtubemp3updater.utils.JSONIDS;
-import org.json.simple.parser.ParseException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +16,7 @@ import java.util.Map;
 
 public class Main
 {
-	public static void main(String[] args) throws IOException, ParseException, ClassNotFoundException, InterruptedException
+	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException
 	{
 		Configuration config = new Configuration(new File(new File(FileUtils.getAppDataFolder(), "YoutubeMP3Updater"), "config.db"), false);
 		if(args.length == 0)

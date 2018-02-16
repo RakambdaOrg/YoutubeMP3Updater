@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
 public class JSONIDS
 {
 	public static ArrayList<URL> parse(File file) throws IOException
