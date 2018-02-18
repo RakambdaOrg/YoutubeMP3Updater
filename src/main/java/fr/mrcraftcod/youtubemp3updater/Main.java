@@ -1,18 +1,23 @@
 package fr.mrcraftcod.youtubemp3updater;
 
 import fr.mrcraftcod.utils.base.FileUtils;
-import fr.mrcraftcod.youtubemp3updater.objects.FileDownloadWorker;
+import fr.mrcraftcod.youtubemp3updater.objects.DownloaderCallable;
 import fr.mrcraftcod.youtubemp3updater.utils.Configuration;
 import fr.mrcraftcod.youtubemp3updater.utils.JSONIDS;
+import javafx.util.Pair;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Main
 {
@@ -49,17 +54,28 @@ public class Main
 	{
 		//ArrayList<URL> videos = ChromeBookmarks.getBarBookmarks("YTMP3");
 		ArrayList<URL> videos = JSONIDS.parse(file);
-		File filee = new File(FileUtils.getDesktopFolder("YTTMP3"), "downloads.sh");
-		FileUtils.createDirectories(filee);
-		PrintWriter pw = new PrintWriter(filee);
-		pw.println("#!/bin/sh");
+		ExecutorService executorService = Executors.newFixedThreadPool(2);
+		ArrayList<Future<Pair<String, Boolean>>> futures = new ArrayList<>();
 		for(URL url : videos)
 		{
 			String videoID;
 			if((videoID = getVideoID(url)) != null && !config.isVideoDone(videoID))
-				new FileDownloadWorker(config, pw, videoID).onDone();
+				futures.add(executorService.submit(new DownloaderCallable(videoID, Paths.get(FileUtils.getDesktopFolder("YTMP3").toURI()))));
 		}
-		pw.close();
+		executorService.shutdown();
+		futures.forEach(f -> {
+			try
+			{
+				Pair<String, Boolean> result = f.get();
+				if(result.getValue())
+					config.setVideoDone(result.getKey());
+				
+			}
+			catch(InterruptedException | ExecutionException e)
+			{
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	private static String getVideoID(URL url) throws UnsupportedEncodingException
