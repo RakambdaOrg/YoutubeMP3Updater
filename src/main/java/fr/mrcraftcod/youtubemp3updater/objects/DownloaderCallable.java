@@ -36,7 +36,7 @@ public class DownloaderCallable implements Callable<Pair<String, Boolean>>
 		
 		try
 		{
-			return executeCommand("youtube-dl --extract-audio --audio-format mp3 'http://www.youtube.com/watch?v=" + videoID + "'", path) == 0;
+			return executeCommand("youtube-dl --extract-audio --audio-format mp3 http://www.youtube.com/watch?v=" + videoID, path) == 0;
 		}
 		catch(IOException | InterruptedException e)
 		{
@@ -52,6 +52,8 @@ public class DownloaderCallable implements Callable<Pair<String, Boolean>>
 		if(!OSUtils.isMac())
 			beginning = "cmd /c start /wait ";
 		command = beginning + command + ending;
+		System.out.println("Executing command: " + command);
+		path.toFile().mkdirs();
 		Process proc = Runtime.getRuntime().exec(command, null, path.toFile());
 		
 		boolean print = true;
