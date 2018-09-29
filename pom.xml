@@ -11,19 +11,26 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>10</java.version>
+        <java.version>11</java.version>
         <main.class>fr.mrcraftcod.youtubemp3updater.Main</main.class>
+        <mrcraftcod.utils>4.2.0</mrcraftcod.utils>
     </properties>
 
     <modules>
     </modules>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -59,7 +66,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -71,7 +78,7 @@
                     <dependency>
                         <groupId>org.ow2.asm</groupId>
                         <artifactId>asm</artifactId>
-                        <version>6.1</version>
+                        <version>6.2.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -86,31 +93,44 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <copy file="${basedir}/target/${project.artifactId}.jar" tofile="${copy.build.path}/${project.artifactId}.jar"/>
-                            </tasks>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>mrcraftcod.write</id>
+            <url>${mrcraftcod.write.url.ftp}</url>
+        </repository>
+    </distributionManagement>
     <repositories>
         <repository>
             <id>mrcraftcod.read</id>
             <url>https://maven.mrcraftcod.fr/</url>
         </repository>
     </repositories>
+
     <dependencies>
         <dependency>
             <groupId>fr.mrcraftcod</groupId>
             <artifactId>utils.base</artifactId>
-            <version>3.0.0</version>
+            <version>${mrcraftcod.utils}</version>
         </dependency>
         <dependency>
             <groupId>fr.mrcraftcod</groupId>
             <artifactId>utils.config</artifactId>
-            <version>3.0.0</version>
+            <version>${mrcraftcod.utils}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>11</version>
         </dependency>
     </dependencies>
 </project>

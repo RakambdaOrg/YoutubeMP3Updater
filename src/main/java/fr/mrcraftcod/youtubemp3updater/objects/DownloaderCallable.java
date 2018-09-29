@@ -2,6 +2,8 @@ package fr.mrcraftcod.youtubemp3updater.objects;
 
 import fr.mrcraftcod.utils.base.OSUtils;
 import javafx.util.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,10 +18,11 @@ import java.util.concurrent.Callable;
  */
 public class DownloaderCallable implements Callable<Pair<String, Boolean>>
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DownloaderCallable.class);
 	private final String videoID;
 	private final Path path;
 	
-	public DownloaderCallable(String videoID, Path path)
+	public DownloaderCallable(final String videoID, final Path path)
 	{
 		this.videoID = videoID;
 		this.path = path;
@@ -31,43 +34,39 @@ public class DownloaderCallable implements Callable<Pair<String, Boolean>>
 		return new Pair<>(this.videoID, downloadSong(this.videoID, this.path));
 	}
 	
-	private boolean downloadSong(String videoID, Path path)
+	private boolean downloadSong(final String videoID, final Path path)
 	{
-		
 		try
 		{
 			return executeCommand("youtube-dl --extract-audio --audio-format mp3 http://www.youtube.com/watch?v=" + videoID, path) == 0;
 		}
-		catch(IOException | InterruptedException e)
+		catch(final IOException | InterruptedException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn("Error downloading {}", videoID, e);
 		}
 		return false;
 	}
 	
-	private int executeCommand(String command, Path path) throws IOException, InterruptedException
+	private int executeCommand(String command, final Path path) throws IOException, InterruptedException
 	{
-		String beginning = "";
-		String ending = "";
+		var beginning = "";
+		final var ending = "";
 		if(!OSUtils.isMac())
 			beginning = "cmd /c start /wait ";
 		command = beginning + command + ending;
-		System.out.println("Executing command: " + command);
+		LOGGER.info("Executing command: {}", command);
 		path.toFile().mkdirs();
-		Process proc = Runtime.getRuntime().exec(command, null, path.toFile());
+		final var proc = Runtime.getRuntime().exec(command, null, path.toFile());
 		
-		boolean print = true;
-		
-		BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-		BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+		final var stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+		final var stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 		
 		String s;
 		while((s = stdInput.readLine()) != null)
-			if(print)
-				System.out.println(s);
+			LOGGER.info(s);
 		
 		while((s = stdError.readLine()) != null)
-			System.out.println(s);
+			LOGGER.warn(s);
 		
 		return proc.waitFor();
 	}

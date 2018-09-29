@@ -9,14 +9,14 @@ import java.util.ArrayList;
 
 public class JSONIDS
 {
-	public static ArrayList<URL> parse(File file) throws IOException
+	public static ArrayList<URL> parse(final File file) throws IOException
 	{
 		if(file == null || !file.exists())
 			return new ArrayList<>();
-		ArrayList<URL> urls = new ArrayList<>();
-		StringBuilder stringBuilder = new StringBuilder();
+		final var urls = new ArrayList<URL>();
+		final var stringBuilder = new StringBuilder();
 		Files.readAllLines(Paths.get(file.toURI())).forEach(stringBuilder::append);
-		for(String id : stringBuilder.toString().replace("\"", "").replace(" ", "").replace("[", "").replace("]", "").split(","))
+		for(final var id : stringBuilder.toString().replace("\"", "").replace(" ", "").replace("[", "").replace("]", "").split(","))
 			urls.add(new URL("https://www.youtube.com/watch?v=" + id));
 		return urls;
 	}
