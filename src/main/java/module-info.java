@@ -7,6 +7,7 @@
 module mrcraftcod.youtubemp3updater {
 	requires fr.mrcraftcod.utils.base;
 	requires fr.mrcraftcod.utils.config;
-	requires slf4j.api;
+	requires org.slf4j;
 	requires jdeferred.core;
+	requires javafx.base;
 }
