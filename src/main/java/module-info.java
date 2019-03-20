@@ -1,13 +1,14 @@
-/**
- * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 16/02/2018.
- *
- * @author Thomas Couchoud
- * @since 2018-02-16
- */
-module mrcraftcod.youtubemp3updater {
+open module fr.mrcraftcod.youtubemp3updater {
 	requires fr.mrcraftcod.utils.base;
+	requires fr.mrcraftcod.utils.http;
 	requires fr.mrcraftcod.utils.config;
+	
+	requires unirest.java;
+	requires org.json;
+	
+	requires java.scripting;
 	requires org.slf4j;
+	requires org.apache.logging.log4j;
+	
 	requires jdeferred.core;
-	requires javafx.base;
 }

@@ -26,7 +26,7 @@ public class Main
 	
 	public static void main(final String[] args) throws IOException, ClassNotFoundException, InterruptedException
 	{
-		final var config = new Configuration(new File(new File(FileUtils.getAppDataFolder(), "YoutubeMP3Updater"), "config.db"));
+		Configuration config = new Configuration(new File(new File(FileUtils.getAppDataFolder(), "YoutubeMP3Updater"), "config.db"));
 		if(args.length == 0)
 		{
 			processFile(FileUtils.askFile(), config);

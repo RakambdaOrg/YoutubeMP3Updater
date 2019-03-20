@@ -16,7 +16,7 @@ public class Configuration extends SQLiteManager
 	private static final String TABLE_DB_FILE = "Config";
 	private final List<String> watchedIDS = new ArrayList<>();
 
-	public Configuration(final File databaseURL) throws ClassNotFoundException, InterruptedException
+	public Configuration(File databaseURL) throws ClassNotFoundException, InterruptedException
 	{
 		super(databaseURL);
 		this.sendUpdateRequest("CREATE TABLE IF NOT EXISTS " + TABLE_DB_FILE + "(" + KEY_LABEL + " varchar(75), PRIMARY KEY (" + KEY_LABEL + "));").waitSafely();

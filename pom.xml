@@ -6,7 +6,14 @@
 
     <groupId>mrcraftcod</groupId>
     <artifactId>YPE</artifactId>
-    <version>2.1</version>
+    <version>2.0</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version>
+        <main.class>fr.mrcraftcod.youtubemp3updater.Main</main.class>
+        <slf4j.version>1.8.0-beta4</slf4j.version>
+        <log4j.version>2.11.2</log4j.version>
+    </properties>
     <packaging>jar</packaging>
 
     <properties>
@@ -26,7 +33,36 @@
                 <artifactId>wagon-ftp</artifactId>
             </extension>
         </extensions>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <additionalOptions>-private</additionalOptions>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -77,6 +113,11 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.8</version>
                 <executions>
@@ -98,7 +139,7 @@
 
     <distributionManagement>
         <repository>
-            <id>mrcraftcod.write</id>
+            <id>mrcraftcod.write.ftp</id>
             <url>${mrcraftcod.write.url.ftp}</url>
         </repository>
     </distributionManagement>
@@ -107,23 +148,58 @@
             <id>mrcraftcod.read</id>
             <url>https://maven.mrcraftcod.fr/</url>
         </repository>
+        <repository>
+            <id>apache</id>
+            <name>Apache</name>
+            <url>https://repository.apache.org/snapshots</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j18-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180813</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+        <dependency>
             <groupId>fr.mrcraftcod</groupId>
             <artifactId>utils.base</artifactId>
-            <version>${mrcraftcod.utils}</version>
+            <version>5.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.mrcraftcod</groupId>
+            <artifactId>utils.http</artifactId>
+            <version>5.2.1</version>
         </dependency>
         <dependency>
             <groupId>fr.mrcraftcod</groupId>
             <artifactId>utils.config</artifactId>
-            <version>${mrcraftcod.utils}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>11.0.2</version>
+            <version>5.2.1</version>
         </dependency>
     </dependencies>
 </project>
