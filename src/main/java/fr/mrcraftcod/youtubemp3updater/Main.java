@@ -4,7 +4,7 @@ import fr.mrcraftcod.utils.base.FileUtils;
 import fr.mrcraftcod.youtubemp3updater.objects.DownloaderCallable;
 import fr.mrcraftcod.youtubemp3updater.utils.Configuration;
 import fr.mrcraftcod.youtubemp3updater.utils.JSONIDS;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.File;

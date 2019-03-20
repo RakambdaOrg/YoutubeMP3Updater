@@ -1,7 +1,8 @@
 package fr.mrcraftcod.youtubemp3updater.objects;
 
 import fr.mrcraftcod.utils.base.OSUtils;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
@@ -29,9 +30,8 @@ public class DownloaderCallable implements Callable<Pair<String, Boolean>>
 	}
 	
 	@Override
-	public Pair<String, Boolean> call() throws Exception
-	{
-		return new Pair<>(this.videoID, downloadSong(this.videoID, this.path));
+	public Pair<String, Boolean> call(){
+		return ImmutablePair.of(this.videoID, downloadSong(this.videoID, this.path));
 	}
 	
 	private boolean downloadSong(final String videoID, final Path path)

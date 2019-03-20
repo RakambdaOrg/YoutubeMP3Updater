@@ -11,4 +11,5 @@ open module fr.mrcraftcod.youtubemp3updater {
 	requires org.apache.logging.log4j;
 	
 	requires jdeferred.core;
+	requires org.apache.commons.lang3;
 }
