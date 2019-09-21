@@ -12,9 +12,11 @@
         <java.version>12</java.version>
         <main.class>fr.mrcraftcod.youtubemp3updater.Main</main.class>
         <final.name>YouTubeMP3Updater</final.name>
-        <slf4j.version>1.8.0-beta4</slf4j.version>
-        <log4j.version>2.11.2</log4j.version>
-        <mrcraftcod.version>12.0.2</mrcraftcod.version>
+        <slf4j.version>2.0.0-alpha0</slf4j.version>
+        <log4j.version>2.12.1</log4j.version>
+        <mrcraftcod.version>12.0.9</mrcraftcod.version>
+        <json.version>20190722</json.version>
+        <jsoup.version>1.12.1</jsoup.version>
     </properties>
     <packaging>jar</packaging>
 
@@ -80,7 +82,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
                             <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
                             <finalName>${final.name}</finalName>
                             <transformers>
@@ -143,12 +145,6 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>mrcraftcod.write.ftp</id>
-            <url>${mrcraftcod.write.url.ftp}</url>
-        </repository>
-    </distributionManagement>
     <repositories>
         <repository>
             <id>mrcraftcod.read</id>
@@ -185,12 +181,12 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20180813</version>
+            <version>${json.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.11.3</version>
+            <version>${jsoup.version}</version>
         </dependency>
         <dependency>
             <groupId>fr.mrcraftcod</groupId>
