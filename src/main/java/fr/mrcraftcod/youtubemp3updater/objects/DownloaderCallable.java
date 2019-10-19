@@ -38,7 +38,7 @@ public class DownloaderCallable implements Callable<Pair<String, Boolean>>
 	{
 		try
 		{
-			return executeCommand("youtube-dl --extract-audio --audio-format mp3 http://www.youtube.com/watch?v=" + videoID, path) == 0;
+			return executeCommand("youtube-dl --quiet --extract-audio --audio-format mp3 http://www.youtube.com/watch?v=" + videoID, path) == 0;
 		}
 		catch(final IOException | InterruptedException e)
 		{
