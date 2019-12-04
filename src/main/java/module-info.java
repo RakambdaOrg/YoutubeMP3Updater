@@ -1,15 +1,13 @@
-open module fr.mrcraftcod.youtubemp3updater {
-	requires fr.mrcraftcod.utils.base;
-	requires fr.mrcraftcod.utils.http;
-	requires fr.mrcraftcod.utils.config;
-	
-	requires unirest.java;
-	requires org.json;
-	
-	requires java.scripting;
+open module fr.raksrinana.youtubemp3updater {
+	requires java.sql;
+	requires fr.raksrinana.utils.base;
+	requires fr.raksrinana.utils.http;
+	requires fr.raksrinana.utils.config;
 	requires org.slf4j;
-	requires org.apache.logging.log4j;
-	
-	requires jdeferred.core;
+	requires ch.qos.logback.classic;
+	requires jcommander;
 	requires org.apache.commons.lang3;
+	requires lombok;
+	requires com.fasterxml.jackson.annotation;
+	requires com.fasterxml.jackson.databind;
 }
