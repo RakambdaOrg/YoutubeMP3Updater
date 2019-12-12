@@ -32,13 +32,13 @@ public class Main{
 		Optional.ofNullable(parameters.getInputPath()).or(FileUtils::askFile).ifPresent(inputFile -> {
 			final Parser parser = new JSonParser(inputFile);
 			final var providers = parser.parse();
-			try(Configuration config = new Configuration(parameters.getDatabasePath())){
+			try(Configuration config = new Configuration(parameters.getDatabasePath().toAbsolutePath())){
 				if(parameters.isDeleteInDb()){
 					log.info("Removing videos from database {}", providers);
 					providers.forEach(config::removeVideo);
 				}
 				else{
-					processFile(config, providers, parameters.getOutputPath());
+					processFile(config, providers, parameters.getOutputPath().toAbsolutePath());
 				}
 			}
 			catch(ExecutionException | TimeoutException | InterruptedException | ClassNotFoundException e){

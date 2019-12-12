@@ -6,7 +6,7 @@ open module fr.raksrinana.youtubemp3updater {
 	requires org.slf4j;
 	requires ch.qos.logback.classic;
 	requires jcommander;
-	requires lombok;
+	requires static lombok;
 	requires com.fasterxml.jackson.annotation;
 	requires com.fasterxml.jackson.databind;
 }
