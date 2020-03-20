@@ -4,5 +4,6 @@ build/
 out/
 target/
 *.iml
+*.db
 
 secrets.properties

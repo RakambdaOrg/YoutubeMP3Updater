@@ -50,6 +50,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:${project.jackson_version}")
 
     implementation("com.beust:jcommander:${project.jcommander_version}")
+    implementation("com.konghq:unirest-java:${project.unirest_version}")
 }
 
 repositories {

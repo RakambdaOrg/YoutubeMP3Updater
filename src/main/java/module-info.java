@@ -9,4 +9,5 @@ open module fr.raksrinana.youtubemp3updater {
 	requires static lombok;
 	requires com.fasterxml.jackson.annotation;
 	requires com.fasterxml.jackson.databind;
+	requires unirest.java;
 }
