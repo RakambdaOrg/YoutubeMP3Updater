@@ -1,7 +1,5 @@
 package fr.raksrinana.youtubemp3updater;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
 import fr.raksrinana.utils.base.FileUtils;
 import fr.raksrinana.youtubemp3updater.download.DownloaderCallable;
 import fr.raksrinana.youtubemp3updater.parsers.JSonParser;
@@ -9,7 +7,9 @@ import fr.raksrinana.youtubemp3updater.parsers.Parser;
 import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
 import fr.raksrinana.youtubemp3updater.utils.Configuration;
 import lombok.extern.slf4j.Slf4j;
+import picocli.CommandLine;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -21,14 +21,18 @@ import java.util.stream.Collectors;
 public class Main{
 	public static void main(final String[] args){
 		final var parameters = new CLIParameters();
+		var cli = new CommandLine(parameters);
+		cli.registerConverter(Path.class, Paths::get);
+		cli.setUnmatchedArgumentsAllowed(true);
 		try{
-			JCommander.newBuilder().addObject(parameters).build().parse(args);
+			cli.parseArgs(args);
 		}
-		catch(final ParameterException e){
+		catch(final CommandLine.ParameterException e){
 			log.error("Failed to parse arguments", e);
-			e.usage();
+			cli.usage(System.out);
 			return;
 		}
+		
 		Optional.ofNullable(parameters.getInputPath()).or(FileUtils::askFile).ifPresent(inputFile -> {
 			final Parser parser = new JSonParser(inputFile);
 			final var providers = parser.parse();
