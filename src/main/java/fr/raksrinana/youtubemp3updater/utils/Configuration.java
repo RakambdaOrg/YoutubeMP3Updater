@@ -32,7 +32,9 @@ public class Configuration extends SQLiteManager{
 	
 	public void removeVideo(final UrlProvider provider) throws SQLException{
 		if(watchedIDS.remove(provider)){
-			this.sendPreparedUpdateRequest("DELETE FROM Downloads WHERE Provider = ? AND VideoID = ?", new PreparedStatementFiller(new SQLValue(STRING, provider.getName()), new SQLValue(STRING, provider.getId())));
+			this.sendPreparedUpdateRequest("DELETE FROM Downloads WHERE Provider = ? AND VideoID = ?", new PreparedStatementFiller(
+					new SQLValue(STRING, provider.getName()),
+					new SQLValue(STRING, provider.getId())));
 		}
 	}
 	

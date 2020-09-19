@@ -8,13 +8,14 @@ import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
 import fr.raksrinana.youtubemp3updater.utils.Configuration;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -39,13 +40,20 @@ public class Main{
 			try(Configuration config = new Configuration(parameters.getDatabasePath().toAbsolutePath())){
 				if(parameters.isDeleteInDb()){
 					log.info("Removing videos from database {}", providers);
-					providers.forEach(config::removeVideo);
+					providers.forEach(provider -> {
+						try{
+							config.removeVideo(provider);
+						}
+						catch(SQLException e){
+							log.error("Failed to remove video {}", provider, e);
+						}
+					});
 				}
 				else{
 					processFile(config, providers, parameters.getOutputPath().toAbsolutePath());
 				}
 			}
-			catch(ExecutionException | TimeoutException | InterruptedException | ClassNotFoundException e){
+			catch(SQLException | IOException e){
 				log.error("Failed to process ids", e);
 			}
 		});
