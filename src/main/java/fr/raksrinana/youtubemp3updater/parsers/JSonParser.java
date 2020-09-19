@@ -28,7 +28,9 @@ public class JSonParser implements Parser{
 	public Collection<UrlProvider> parse(){
 		if(file.toFile().exists()){
 			try(final var fis = Files.newBufferedReader(file)){
-				return mapper.readValue(fis, new TypeReference<Set<String>>(){}).stream().map(YoutubeProvider::new).collect(Collectors.toSet());
+				return mapper.readValue(fis, new TypeReference<Set<String>>(){}).stream()
+						.map(YoutubeProvider::new)
+						.collect(Collectors.toSet());
 			}
 			catch(final IOException e){
 				log.error("Failed to read ids in {}", file, e);
@@ -39,7 +41,12 @@ public class JSonParser implements Parser{
 	
 	static{
 		mapper = new ObjectMapper();
-		mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker().withFieldVisibility(JsonAutoDetect.Visibility.ANY).withGetterVisibility(JsonAutoDetect.Visibility.NONE).withSetterVisibility(JsonAutoDetect.Visibility.NONE).withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
+		mapper.setVisibility(mapper.getSerializationConfig()
+				.getDefaultVisibilityChecker()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+				.withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+				.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+				.withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
 	}
 }

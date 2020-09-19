@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -39,7 +40,7 @@ public class DownloaderCallable implements Callable<DownloadResult>{
 		}
 		command = beginning + command + ending;
 		log.info("Executing command: {}", command);
-		path.toFile().mkdirs();
+		Files.createDirectories(path);
 		final var proc = Runtime.getRuntime().exec(command, null, path.toFile());
 		final var stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 		final var stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));

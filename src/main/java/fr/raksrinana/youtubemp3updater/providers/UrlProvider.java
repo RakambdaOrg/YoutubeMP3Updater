@@ -4,9 +4,8 @@ import java.net.URL;
 
 public interface UrlProvider{
 	static UrlProvider get(String name, String id){
-		switch(name){
-			case YoutubeProvider.NAME:
-				return new YoutubeProvider(id);
+		if(YoutubeProvider.NAME.equals(name)){
+			return new YoutubeProvider(id);
 		}
 		return null;
 	}

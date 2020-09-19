@@ -53,7 +53,10 @@ public class Main{
 	
 	private static void processFile(final Configuration config, final Collection<UrlProvider> providers, final Path outputPath){
 		final var executorService = Executors.newFixedThreadPool(2);
-		final var futures = providers.stream().filter(provider -> !config.isVideoDone(provider)).map(provider -> executorService.submit(new DownloaderCallable(provider, outputPath))).collect(Collectors.toList());
+		final var futures = providers.stream()
+				.filter(provider -> !config.isVideoDone(provider))
+				.map(provider -> executorService.submit(new DownloaderCallable(provider, outputPath)))
+				.collect(Collectors.toList());
 		executorService.shutdown();
 		futures.forEach(f -> {
 			try{
