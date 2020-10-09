@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import static fr.raksrinana.utils.config.SQLValue.Type.STRING;
 
 @Slf4j
@@ -19,11 +22,16 @@ public class Configuration extends SQLiteManager{
 	public Configuration(Path databaseURL) throws IOException, SQLException{
 		super(databaseURL);
 		this.sendUpdateRequest("CREATE TABLE IF NOT EXISTS Downloads(Provider varchar(32), VideoID varchar(32), PRIMARY KEY (Provider, VideoID))");
+	}
+	
+	public void fetchWatchedIDs() throws InterruptedException, ExecutionException, TimeoutException{
 		this.sendCompletableQueryRequest("SELECT * FROM Downloads", result -> {
 			final var providerName = result.getString("Provider");
 			final var videoID = result.getString("VideoID");
 			return UrlProvider.get(providerName, videoID);
-		}).thenAccept(watchedIDS::addAll);
+		})
+				.thenAccept(watchedIDS::addAll)
+				.get(5, TimeUnit.MINUTES);
 	}
 	
 	public boolean isVideoDone(final UrlProvider provider){

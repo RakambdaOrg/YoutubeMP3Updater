@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -50,7 +51,13 @@ public class Main{
 					});
 				}
 				else{
-					processFile(config, providers, parameters.getOutputPath().toAbsolutePath());
+					try{
+						config.fetchWatchedIDs();
+						processFile(config, providers, parameters.getOutputPath().toAbsolutePath());
+					}
+					catch(InterruptedException | TimeoutException | ExecutionException e){
+						log.error("Failed to process downloads", e);
+					}
 				}
 			}
 			catch(SQLException | IOException e){

@@ -1,6 +1,5 @@
 package fr.raksrinana.youtubemp3updater.download;
 
-import fr.raksrinana.utils.base.OSUtils;
 import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
 import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
@@ -33,23 +32,20 @@ public class DownloaderCallable implements Callable<DownloadResult>{
 	}
 	
 	private int executeCommand(String command, final Path path) throws IOException, InterruptedException{
-		var beginning = "";
-		final var ending = "";
-		if(OSUtils.getOs() == OSUtils.OS.WIN){
-			beginning = "cmd /c start /wait ";
-		}
-		command = beginning + command + ending;
 		log.info("Executing command: {}", command);
 		Files.createDirectories(path);
 		final var proc = Runtime.getRuntime().exec(command, null, path.toFile());
-		final var stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-		final var stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 		String s;
-		while((s = stdInput.readLine()) != null){
-			log.info(s);
+		try(final var stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()))){
+			while((s = stdInput.readLine()) != null){
+				log.debug(s);
+			}
 		}
-		while((s = stdError.readLine()) != null){
-			log.warn(s);
+		
+		try(final var stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()))){
+			while((s = stdError.readLine()) != null){
+				log.warn(s);
+			}
 		}
 		return proc.waitFor();
 	}
