@@ -5,7 +5,7 @@ buildscript {
         raksrinana_utils_version='15.0.1'
         picocli_version = '4.5.2'
         jackson_version='2.12.0'
-        unirest_version='3.11.08'
+        unirest_version='3.11.09'
     }
 }
 
