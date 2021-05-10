@@ -75,7 +75,7 @@ jobs:
           GITHUB_USER: RakSrinaNa
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy on Dropbox
-        uses: deka0106/upload-to-dropbox@v2
+        uses: deka0106/upload-to-dropbox@v2.0.1
         with:
           dropbox_access_token: ${{ secrets.DROPBOX_DEPLOY_TOKEN }}
           src: "build/libs/youtubemp3updater-shaded.jar"
