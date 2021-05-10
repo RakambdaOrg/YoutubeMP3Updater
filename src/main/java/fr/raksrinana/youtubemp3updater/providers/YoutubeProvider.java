@@ -2,17 +2,17 @@ package fr.raksrinana.youtubemp3updater.providers;
 
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-@Slf4j
+@Log4j2
 public class YoutubeProvider implements UrlProvider{
 	public static final String NAME = "YouTube";
 	@Getter
-	private String id;
+	private final String id;
 	
 	public YoutubeProvider(@NonNull String id){
 		this.id = id;

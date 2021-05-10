@@ -6,7 +6,7 @@ import fr.raksrinana.youtubemp3updater.parsers.JSonParser;
 import fr.raksrinana.youtubemp3updater.parsers.Parser;
 import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
 import fr.raksrinana.youtubemp3updater.utils.Configuration;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import picocli.CommandLine;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-@Slf4j
+@Log4j2
 public class Main{
 	public static void main(final String[] args){
 		final var parameters = new CLIParameters();

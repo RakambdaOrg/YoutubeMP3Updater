@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
 import fr.raksrinana.youtubemp3updater.providers.YoutubeProvider;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Slf4j
+@Log4j2
 public class JSonParser implements Parser{
 	private static final ObjectMapper mapper;
 	private final Path file;

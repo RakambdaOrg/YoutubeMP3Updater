@@ -1,7 +1,7 @@
 package fr.raksrinana.youtubemp3updater.download;
 
 import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
-@Slf4j
+@Log4j2
 public class DownloaderCallable implements Callable<DownloadResult>{
 	private final UrlProvider provider;
 	private final Path path;

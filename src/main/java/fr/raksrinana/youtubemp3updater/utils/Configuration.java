@@ -4,7 +4,7 @@ import fr.raksrinana.utils.config.PreparedStatementFiller;
 import fr.raksrinana.utils.config.SQLValue;
 import fr.raksrinana.utils.config.SQLiteManager;
 import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import static fr.raksrinana.utils.config.SQLValue.Type.STRING;
 
-@Slf4j
+@Log4j2
 public class Configuration extends SQLiteManager{
 	private final Set<UrlProvider> watchedIDS = new HashSet<>();
 	
