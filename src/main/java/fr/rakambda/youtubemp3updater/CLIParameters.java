@@ -1,4 +1,4 @@
-package fr.raksrinana.youtubemp3updater;
+package fr.rakambda.youtubemp3updater;
 
 import fr.raksrinana.utils.base.FileUtils;
 import lombok.Getter;

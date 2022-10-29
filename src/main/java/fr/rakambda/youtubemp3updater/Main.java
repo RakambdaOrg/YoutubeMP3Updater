@@ -1,11 +1,11 @@
-package fr.raksrinana.youtubemp3updater;
+package fr.rakambda.youtubemp3updater;
 
+import fr.rakambda.youtubemp3updater.download.DownloaderCallable;
+import fr.rakambda.youtubemp3updater.parsers.JSonParser;
+import fr.rakambda.youtubemp3updater.parsers.Parser;
+import fr.rakambda.youtubemp3updater.providers.UrlProvider;
+import fr.rakambda.youtubemp3updater.utils.Configuration;
 import fr.raksrinana.utils.base.FileUtils;
-import fr.raksrinana.youtubemp3updater.download.DownloaderCallable;
-import fr.raksrinana.youtubemp3updater.parsers.JSonParser;
-import fr.raksrinana.youtubemp3updater.parsers.Parser;
-import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
-import fr.raksrinana.youtubemp3updater.utils.Configuration;
 import lombok.extern.log4j.Log4j2;
 import picocli.CommandLine;
 import java.io.IOException;

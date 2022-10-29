@@ -1,6 +1,6 @@
-package fr.raksrinana.youtubemp3updater.download;
+package fr.rakambda.youtubemp3updater.download;
 
-import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
+import fr.rakambda.youtubemp3updater.providers.UrlProvider;
 import lombok.Getter;
 
 @Getter

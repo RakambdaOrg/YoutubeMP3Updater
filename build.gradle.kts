@@ -8,7 +8,7 @@ plugins {
     id("com.gorylenko.gradle-git-properties") version ("2.3.1-rc3")
 }
 
-group = "fr.raksrinana"
+group = "fr.rakambda"
 description = "YoutubeMP3Updater"
 
 dependencies {
@@ -30,7 +30,7 @@ repositories {
     val githubRepoPassword: String by project
 
     maven {
-        url = uri("https://maven.pkg.github.com/RakSrinaNa/JavaUtils/")
+        url = uri("https://maven.pkg.github.com/Rakambda/JavaUtils/")
         credentials {
             username = githubRepoUsername
             password = githubRepoPassword

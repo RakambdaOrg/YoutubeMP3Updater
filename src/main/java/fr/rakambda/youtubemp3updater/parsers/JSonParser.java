@@ -1,11 +1,11 @@
-package fr.raksrinana.youtubemp3updater.parsers;
+package fr.rakambda.youtubemp3updater.parsers;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
-import fr.raksrinana.youtubemp3updater.providers.YoutubeProvider;
+import fr.rakambda.youtubemp3updater.providers.UrlProvider;
+import fr.rakambda.youtubemp3updater.providers.YoutubeProvider;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import java.io.IOException;

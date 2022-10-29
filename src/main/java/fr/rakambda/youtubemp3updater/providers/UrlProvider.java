@@ -1,4 +1,4 @@
-package fr.raksrinana.youtubemp3updater.providers;
+package fr.rakambda.youtubemp3updater.providers;
 
 import java.net.URL;
 

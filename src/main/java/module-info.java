@@ -1,4 +1,4 @@
-open module fr.raksrinana.youtubemp3updater {
+open module fr.rakambda.youtubemp3updater {
 	requires java.sql;
 	requires fr.raksrinana.utils.base;
 	requires fr.raksrinana.utils.http;

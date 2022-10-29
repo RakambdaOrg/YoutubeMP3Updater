@@ -1,9 +1,9 @@
-package fr.raksrinana.youtubemp3updater.utils;
+package fr.rakambda.youtubemp3updater.utils;
 
+import fr.rakambda.youtubemp3updater.providers.UrlProvider;
 import fr.raksrinana.utils.config.PreparedStatementFiller;
 import fr.raksrinana.utils.config.SQLValue;
 import fr.raksrinana.utils.config.SQLiteManager;
-import fr.raksrinana.youtubemp3updater.providers.UrlProvider;
 import lombok.extern.log4j.Log4j2;
 import java.io.IOException;
 import java.nio.file.Path;
