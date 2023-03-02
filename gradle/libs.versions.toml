@@ -6,7 +6,7 @@ unirest-version = "4.0.0-RC2"
 picocli-version = "4.7.1"
 jackson-version = "2.14.2"
 raksrinana-utils-version = "15.0.3"
-jetbrains-annotations-version = "24.0.0"
+jetbrains-annotations-version = "24.0.1"
 
 [libraries]
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-version" }
