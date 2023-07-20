@@ -23,8 +23,8 @@ jobs:
         with:
           arguments: |
             check
-            -Dorg.gradle.project.githubRepoUsername="RakSrinaNa"
-            -Dorg.gradle.project.githubRepoPassword="${{ secrets.GITHUB_TOKEN }}"
+            -DgithubRepoUsername=RakSrinaNa
+            -DgithubRepoPassword=${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
