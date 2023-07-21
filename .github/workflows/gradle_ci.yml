@@ -23,6 +23,7 @@ jobs:
         with:
           arguments: |
             check
+            build
             -PgithubRepoUsername=RakSrinaNa
             -PgithubRepoPassword=${{ secrets.GITHUB_TOKEN }}
 
