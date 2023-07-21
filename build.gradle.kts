@@ -26,14 +26,11 @@ dependencies {
 }
 
 repositories {
-    val githubRepoUsername: String by project
-    val githubRepoPassword: String by project
-
     maven {
         url = uri("https://maven.pkg.github.com/Rakambda/JavaUtils/")
         credentials {
-            username = githubRepoUsername
-            password = githubRepoPassword
+            username = project.findProperty("githubRepoUsername") as String?
+            password = project.findProperty("githubRepoPassword") as String?
         }
     }
     mavenCentral()
