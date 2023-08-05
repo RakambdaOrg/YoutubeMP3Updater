@@ -7,36 +7,40 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.rakambda.youtubemp3updater.providers.UrlProvider;
 import fr.rakambda.youtubemp3updater.providers.YoutubeProvider;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Log4j2
+@RequiredArgsConstructor
 public class JSonParser implements Parser{
 	private static final ObjectMapper mapper;
+	
+	@NonNull
 	private final Path file;
 	
-	public JSonParser(@NonNull final Path file){
-		this.file = file;
-	}
-	
+	@NotNull
 	public Collection<UrlProvider> parse(){
-		if(file.toFile().exists()){
-			try(final var fis = Files.newBufferedReader(file)){
-				return mapper.readValue(fis, new TypeReference<Set<String>>(){}).stream()
-						.map(YoutubeProvider::new)
-						.collect(Collectors.toSet());
-			}
-			catch(final IOException e){
-				log.error("Failed to read ids in {}", file, e);
-			}
+		if(!Files.exists(file)){
+			return List.of();
 		}
-		return Collections.emptySet();
+		
+		try(var fis = Files.newBufferedReader(file)){
+			return mapper.readValue(fis, new TypeReference<Set<String>>(){}).stream()
+					.map(YoutubeProvider::new)
+					.collect(Collectors.toSet());
+		}
+		catch(final IOException e){
+			log.error("Failed to read ids in {}", file, e);
+			return List.of();
+		}
 	}
 	
 	static{

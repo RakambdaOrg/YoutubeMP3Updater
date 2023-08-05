@@ -1,14 +1,15 @@
 package fr.rakambda.youtubemp3updater;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import fr.rakambda.youtubemp3updater.download.DownloaderCallable;
 import fr.rakambda.youtubemp3updater.parsers.JSonParser;
-import fr.rakambda.youtubemp3updater.parsers.Parser;
 import fr.rakambda.youtubemp3updater.providers.UrlProvider;
-import fr.rakambda.youtubemp3updater.utils.Configuration;
-import fr.raksrinana.utils.base.FileUtils;
+import fr.rakambda.youtubemp3updater.storage.IStorage;
+import fr.rakambda.youtubemp3updater.storage.database.H2Storage;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import picocli.CommandLine;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -16,73 +17,80 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 
 @Log4j2
 public class Main{
 	public static void main(final String[] args){
-		final var parameters = new CLIParameters();
+		var parameters = new CLIParameters();
 		var cli = new CommandLine(parameters);
 		cli.registerConverter(Path.class, Paths::get);
 		cli.setUnmatchedArgumentsAllowed(true);
 		try{
 			cli.parseArgs(args);
 		}
-		catch(final CommandLine.ParameterException e){
+		catch(CommandLine.ParameterException e){
 			log.error("Failed to parse arguments", e);
 			cli.usage(System.out);
 			return;
 		}
 		
-		Optional.ofNullable(parameters.getInputPath()).or(FileUtils::askFile).ifPresent(inputFile -> {
-			final Parser parser = new JSonParser(inputFile);
-			final var providers = parser.parse();
-			try(Configuration config = new Configuration(parameters.getDatabasePath().toAbsolutePath())){
-				if(parameters.isDeleteInDb()){
-					log.info("Removing videos from database {}", providers);
-					providers.forEach(provider -> {
-						try{
-							config.removeVideo(provider);
+		Optional.ofNullable(parameters.getInputPath())
+				.ifPresent(inputFile -> {
+					var parser = new JSonParser(inputFile);
+					var providers = parser.parse();
+					try(var storage = getStorage(parameters)){
+						if(parameters.isDeleteInDb()){
+							log.info("Removing videos from database {}", providers);
+							providers.forEach(storage::removeVideo);
 						}
-						catch(SQLException e){
-							log.error("Failed to remove video {}", provider, e);
+						else{
+							storage.fetchWatchedIDs();
+							processFile(storage, providers, parameters.getOutputPath().toAbsolutePath());
 						}
-					});
-				}
-				else{
-					try{
-						config.fetchWatchedIDs();
-						processFile(config, providers, parameters.getOutputPath().toAbsolutePath());
 					}
-					catch(InterruptedException | TimeoutException | ExecutionException e){
-						log.error("Failed to process downloads", e);
+					catch(Exception e){
+						log.error("Failed to process ids", e);
 					}
-				}
-			}
-			catch(SQLException | IOException e){
-				log.error("Failed to process ids", e);
-			}
-		});
+				});
 	}
 	
-	private static void processFile(final Configuration config, final Collection<UrlProvider> providers, final Path outputPath){
-		final var executorService = Executors.newFixedThreadPool(2);
-		final var futures = providers.stream()
-				.filter(provider -> !config.isVideoDone(provider))
-				.map(provider -> executorService.submit(new DownloaderCallable(provider, outputPath)))
-				.collect(Collectors.toList());
-		executorService.shutdown();
-		futures.forEach(f -> {
-			try{
-				final var result = f.get();
-				if(result.isDownloaded()){
-					config.setVideoDone(result.getProvider());
+	private static void processFile(@NotNull IStorage config, @NotNull Collection<UrlProvider> providers, @NotNull Path outputPath){
+		try(var executorService = Executors.newFixedThreadPool(2)){
+			var futures = providers.stream()
+					.filter(provider -> !config.isVideoDone(provider))
+					.map(provider -> executorService.submit(new DownloaderCallable(provider, outputPath)))
+					.toList();
+			
+			futures.forEach(f -> {
+				try{
+					var result = f.get();
+					if(result.isDownloaded()){
+						config.setVideoDone(result.getProvider());
+					}
 				}
-			}
-			catch(final InterruptedException | ExecutionException e){
-				log.warn("Error getting result", e);
-			}
-		});
+				catch(InterruptedException | ExecutionException e){
+					log.warn("Error getting result", e);
+				}
+			});
+		}
+	}
+	
+	@NotNull
+	private static IStorage getStorage(@NotNull CLIParameters parameters) throws SQLException{
+		var h2 = new H2Storage(createH2Datasource(parameters.getDatabasePath()));
+		h2.initDatabase();
+		return h2;
+	}
+	
+	@NotNull
+	private static HikariDataSource createH2Datasource(@NotNull Path path){
+		var config = new HikariConfig();
+		config.setDriverClassName("org.h2.Driver");
+		config.setJdbcUrl("jdbc:h2:" + path.toAbsolutePath());
+		config.addDataSourceProperty("cachePrepStmts", "true");
+		config.addDataSourceProperty("prepStmtCacheSize", "250");
+		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+		config.setMaximumPoolSize(1);
+		return new HikariDataSource(config);
 	}
 }

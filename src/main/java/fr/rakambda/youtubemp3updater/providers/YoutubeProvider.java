@@ -1,39 +1,26 @@
 package fr.rakambda.youtubemp3updater.providers;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
-import java.util.Objects;
 import java.util.StringJoiner;
 
+@Getter
 @Log4j2
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class YoutubeProvider implements UrlProvider{
 	public static final String NAME = "YouTube";
-	@Getter
+	
+	@NonNull
 	private final String id;
-	
-	public YoutubeProvider(@NonNull String id){
-		this.id = id;
-	}
-	
-	@Override
-	public int hashCode(){
-		return Objects.hash(id);
-	}
-	
-	@Override
-	public boolean equals(Object o){
-		if(this == o){
-			return true;
-		}
-		if(o == null || getClass() != o.getClass()){
-			return false;
-		}
-		YoutubeProvider that = (YoutubeProvider) o;
-		return id.equals(that.id);
-	}
 	
 	@Override
 	public String toString(){
@@ -41,18 +28,20 @@ public class YoutubeProvider implements UrlProvider{
 	}
 	
 	@Override
+	@NotNull
 	public String getName(){
 		return NAME;
 	}
 	
 	@Override
+	@Nullable
 	public URL getURL(){
 		try{
-			return new URL("https://www.youtube.com/watch?v=" + getId());
+			return URI.create("https://www.youtube.com/watch?v=" + getId()).toURL();
 		}
 		catch(MalformedURLException e){
 			log.error("Failed to create link for video ID {}", getId(), e);
+			return null;
 		}
-		return null;
 	}
 }

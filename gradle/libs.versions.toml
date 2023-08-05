@@ -5,8 +5,13 @@ log4j2-slf4j-version = "2.20.0"
 unirest-version = "4.0.0-RC2"
 picocli-version = "4.7.4"
 jackson-version = "2.15.2"
-raksrinana-utils-version = "15.0.3"
 jetbrains-annotations-version = "24.0.1"
+lombok-version = "1.18.28"
+hikari-cp-version = "5.0.1"
+h2-version = "2.2.220"
+
+shadow-version = "8.1.1"
+names-version = "0.47.0"
 
 [libraries]
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-version" }
@@ -18,11 +23,14 @@ jackson-core = { group = "com.fasterxml.jackson.core", name = "jackson-core", ve
 jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson-version" }
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson-version" }
 jetbrainsAnnotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrains-annotations-version" }
-rakSrinanaUtilsBase = { group = "fr.raksrinana", name = "utils.base", version.ref = "raksrinana-utils-version" }
-rakSrinanaUtilsConfig = { group = "fr.raksrinana", name = "utils.config", version.ref = "raksrinana-utils-version" }
-rakSrinanaUtilsHttp = { group = "fr.raksrinana", name = "utils.http", version.ref = "raksrinana-utils-version" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok-version" }
+hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari-cp-version" }
+h2 = { group = "com.h2database", name = "h2", version.ref = "h2-version" }
 
 [bundles]
 jackson = ["jackson-core", "jackson-annotations", "jackson-databind"]
 log4j2 = ["log4j2-core", "log4j2-slf4j"]
-raksrinanaUtils = ["rakSrinanaUtilsBase", "rakSrinanaUtilsConfig", "rakSrinanaUtilsHttp"]
+
+[plugins]
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow-version" }
+names = { id = "com.github.ben-manes.versions", version.ref = "names-version" }

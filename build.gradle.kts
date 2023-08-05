@@ -2,10 +2,8 @@ plugins {
     idea
     java
     application
-    id("com.github.johnrengelman.shadow") version ("7.0.0")
-    id("com.github.ben-manes.versions") version ("0.38.0")
-    id("io.freefair.lombok") version ("6.0.0-m2")
-    id("com.gorylenko.gradle-git-properties") version ("2.3.1-rc3")
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.names)
 }
 
 group = "fr.rakambda"
@@ -15,24 +13,21 @@ dependencies {
     implementation(libs.slf4j)
     implementation(libs.bundles.log4j2)
 
-    implementation(libs.bundles.raksrinanaUtils)
-
     implementation(libs.bundles.jackson)
+
+    implementation(libs.hikaricp)
+    implementation(libs.h2)
 
     implementation(libs.unirest)
     implementation(libs.picocli)
 
+    compileOnly(libs.lombok)
     compileOnly(libs.jetbrainsAnnotations)
+
+    annotationProcessor(libs.lombok)
 }
 
 repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/Rakambda/JavaUtils/")
-        credentials {
-            username = project.findProperty("githubRepoUsername") as String?
-            password = project.findProperty("githubRepoPassword") as String?
-        }
-    }
     mavenCentral()
 }
 
@@ -47,13 +42,6 @@ tasks {
 
         options.encoding = "UTF-8"
         options.isDeprecation = true
-
-        doFirst {
-            val compilerArgs = options.compilerArgs
-            compilerArgs.add("--module-path")
-            compilerArgs.add(classpath.asPath)
-            classpath = files()
-        }
     }
 
     jar {
