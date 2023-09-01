@@ -8,7 +8,7 @@ jackson-version = "2.15.2"
 jetbrains-annotations-version = "24.0.1"
 lombok-version = "1.18.28"
 hikari-cp-version = "5.0.1"
-h2-version = "2.2.220"
+h2-version = "2.2.222"
 
 shadow-version = "8.1.1"
 names-version = "0.47.0"
