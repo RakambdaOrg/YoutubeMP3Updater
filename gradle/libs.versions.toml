@@ -11,7 +11,7 @@ hikari-cp-version = "5.1.0"
 h2-version = "2.2.224"
 
 shadow-version = "8.1.1"
-names-version = "0.49.0"
+names-version = "0.50.0"
 
 [libraries]
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-version" }
