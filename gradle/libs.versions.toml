@@ -6,7 +6,7 @@ unirest-version = "4.0.0-RC2"
 picocli-version = "4.7.6"
 jackson-version = "2.17.1"
 jetbrains-annotations-version = "24.1.0"
-lombok-version = "1.18.32"
+lombok-version = "1.18.34"
 hikari-cp-version = "5.1.0"
 h2-version = "2.2.224"
 
